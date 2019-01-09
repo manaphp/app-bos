@@ -1,0 +1,7 @@
+/vendor
+/data
+/tmp
+/.env
+/.idea
+/composer.lock
+/public/uploads

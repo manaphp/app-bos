@@ -1,0 +1,37 @@
+version: "2"
+services:
+  bos_fpm:
+    image: manaphp/php70:1.1
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ../:/var/www/html
+      - ./fpm/conf.d:/etc/php/conf.d
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/uploads:/var/www/html/public/uploads
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/fpm:/var/log/php
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/app/data:/var/www/html/data
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/app/tmp:/var/www/html/tmp
+    restart: always
+  bos_nginx:
+    image: nginx:1.13.3
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ../:/var/www/html
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/uploads:/var/www/html/public/uploads
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/nginx:/var/log/nginx
+    ports:
+      - ${WEB_PORT}:80
+    restart: always
+  bos_mysql:
+    image: mysql:5.7.18
+    environment:
+      - MYSQL_ROOT_PASSWORD
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/mysql/data:/var/lib/mysql
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/mysql/log:/var/log/mysql
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - ./mysql/conf:/etc/mysql/conf.d:ro
+    ports:
+      - ${MYSQL_PORT}:3306
+    restart: always
