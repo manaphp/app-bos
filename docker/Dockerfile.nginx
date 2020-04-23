@@ -1,0 +1,5 @@
+FROM nginx:1.17.6
+
+RUN  ln -f -s /usr/share/zoneinfo/PRC /etc/localtime
+
+COPY docker/nginx/conf/nginx.conf.swoole /etc/nginx/nginx.conf

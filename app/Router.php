@@ -1,17 +1,18 @@
 <?php
+
 namespace App;
 
-use App\Controllers\Api\BucketController;
-use App\Controllers\Api\ObjectController;
+use App\Controllers\BucketController;
+use App\Controllers\ObjectController;
 
 class Router extends \ManaPHP\Router
 {
     public function __construct()
     {
         parent::__construct();
+        $this->_prefix = '/api';
 
-        $this->setAreas(['Api', 'Admin']);
-        $this->addRest('/api/buckets', BucketController::class);
-        $this->addRest('/api/objects', ObjectController::class);
+        $this->addRest('/buckets', BucketController::class);
+        $this->addRest('/objects', ObjectController::class);
     }
 }

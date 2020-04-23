@@ -1,3 +1,9 @@
+/*
+SQLyog Ultimate v12.5.0 (64 bit)
+MySQL - 5.7.28 : Database - manaphp
+*********************************************************************
+*/
+
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -6,25 +12,31 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`manabos` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`manaphp` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `manabos`;
+USE `manaphp`;
 
 /*Table structure for table `bos_bucket` */
+
+DROP TABLE IF EXISTS `bos_bucket`;
 
 CREATE TABLE `bos_bucket` (
   `bucket_id` int(11) NOT NULL AUTO_INCREMENT,
   `bucket_name` varchar(64) CHARACTER SET ascii NOT NULL,
   `base_url` varchar(128) CHARACTER SET ascii NOT NULL,
-  `access_key` char(32) CHARACTER SET ascii NOT NULL,
   `created_time` int(11) NOT NULL,
   PRIMARY KEY (`bucket_id`),
   UNIQUE KEY `bucket_name` (`bucket_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `bos_bucket` */
 
+insert  into `bos_bucket`(`bucket_id`,`bucket_name`,`base_url`,`created_time`) values 
+(1,'www','http://cdn.manaphp.d:8185/',0);
+
 /*Table structure for table `bos_object` */
+
+DROP TABLE IF EXISTS `bos_object`;
 
 CREATE TABLE `bos_object` (
   `object_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -41,7 +53,7 @@ CREATE TABLE `bos_object` (
   `ip` char(15) CHARACTER SET ascii NOT NULL,
   `created_time` int(11) NOT NULL,
   PRIMARY KEY (`object_id`),
-  KEY `bucket_name` (`bucket_name`),
+  UNIQUE KEY `bucket_name` (`bucket_name`,`key`),
   KEY `md5` (`md5`),
   KEY `extension` (`extension`),
   KEY `key` (`key`),

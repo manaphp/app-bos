@@ -1,22 +1,21 @@
 version: "2"
 services:
-  bos_fpm:
+  bos_swoole:
     image: manaphp/php73:3.0
     volumes:
       - /etc/localtime:/etc/localtime
       - ../:/var/www/html
-      - ./fpm/conf.d:/etc/php/conf.d
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/data:/var/www/html/data
+      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/tmp:/var/www/html/tmp
       - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/uploads:/var/www/html/public/uploads
-      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/fpm:/var/log/php
-      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/app/data:/var/www/html/data
-      - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/app/tmp:/var/www/html/tmp
+    command: php /var/www/html/public/index.php
     restart: always
   bos_nginx:
     image: nginx:1.17.6
     volumes:
       - /etc/localtime:/etc/localtime
       - ../:/var/www/html
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf/nginx.conf.swoole:/etc/nginx/nginx.conf
       - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/uploads:/var/www/html/public/uploads
       - /data/volumes/${COMPOSE_PROJECT_NAME}/bos/nginx:/var/log/nginx
     ports:

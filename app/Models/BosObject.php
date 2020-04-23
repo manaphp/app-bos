@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Models;
 
 /**
  * Class App\Models\BosObject
  */
-class Object extends \ManaPHP\Db\Model
+class BosObject extends \ManaPHP\Db\Model
 {
     public $object_id;
     public $key;
@@ -21,11 +22,9 @@ class Object extends \ManaPHP\Db\Model
     public $created_time;
 
     /**
-     * @param mixed $context
-     *
      * @return string
      */
-    public function getSource($context = null)
+    public function getTable()
     {
         return 'bos_object';
     }

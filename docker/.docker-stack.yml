@@ -1,0 +1,36 @@
+version: "3.7"
+services:
+  __SERVICE_NAME_swoole:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.swoole
+    image: docker.l/__PROJECT_NAME/__SERVICE_NAME_swoole:__IMAGE_TAG
+    environment:
+      DOTENV_URL: __DOTENV_URL
+    volumes:
+      - __SERVICE_NAME_uploads:/var/www/html/public/uploads
+      - logger:/var/www/html/data/logger/
+    ports:
+      - 8187:9501
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.__PROJECT_NAME.__SERVICE_NAME == true
+  __SERVICE_NAME_nginx:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.nginx
+    image: docker.l/__PROJECT_NAME/__SERVICE_NAME_nginx:__IMAGE_TAG
+    volumes:
+      - __SERVICE_NAME_uploads:/var/www/html/public/uploads
+    ports:
+      - 8188:80
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.__PROJECT_NAME.__SERVICE_NAME == true
+volumes:
+  __SERVICE_NAME_uploads:
+  logger:

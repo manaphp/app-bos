@@ -29,38 +29,29 @@ http {
     client_max_body_size 32m;
 
     server{
-         listen 80;
-         server_name bos.*;
-         root  /var/www/html/public;
+        listen 80;
+        server_name bos.*;
 
         location / {
-            try_files $uri $uri/ /index.php?_url=$uri&$args;
+            proxy_pass http://bos_swoole:9501;
         }
+    }
 
-      location ~ \.php$ {
-         fastcgi_pass  bos_fpm:9000;
-         fastcgi_index /index.php;
-
-         include fastcgi_params;
-         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    server{
+        listen 80;
+        server_name cdn.*;
+        location / {
+            root /var/www/html/public/uploads/www;
         }
-     }
+    }
 
-     server{
-         listen 80;
-         server_name cdn.*;
-         location / {
-             root /var/www/html/public/uploads/www;
-         }
-     }
-
-     server{
-         listen 80;
-         server_name ~^(?<bucket>\w+)[\.-]cdn[\.-];
-         location / {
-             root /var/www/html/public/uploads/$bucket/;
-         }
-     }
+    server{
+        listen 80;
+        server_name ~^(?<bucket>\w+)[\.-]cdn[\.-];
+        location / {
+            root /var/www/html/public/uploads/$bucket/;
+        }
+    }
 ########################## vhost #############################
   include vhost/*.conf;
 }

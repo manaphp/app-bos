@@ -1,0 +1,14 @@
+.git
+.idea
+.env.*
+.gitattributes
+.gitignore
+.dockerignore
+
+data/*
+tmp/*
+README.md
+.htaccess
+composer.json
+composer.lock
+manacli.bat
